@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+    <head>
+       <meta charset="uft-8"/>
+       <style>
+           .div1{
+           	width:300px;
+           	height:250px;
+           	border:1px red solid;
+           	margin:0 auto;
+           }
+       </style>
+    </head>
+    <body>
+    	<div class="div1  ">
+               我是div1
+    	</div>
+    	<div class="div2  ">
+               我是div2
+    	</div>
+
+    	<div id="scope">
+    		<h2>{{msg}}--===---{{name}}</h2>
+            <h2>{{name}}</h2>
+            <h2>{{msg}}</h2>
+    	</div>
+
+    	<div  id="scope1"  >
+            <p for="1111">{{name}}</p>
+            <div for="1111">{{name}}</div>
+            <p for="1111"><span>{{msg}}</span></p>           
+    	</div>
+    </body>
+</html>
+<script>
+     var ss={
+     	width:"300px",
+     	height:"200px",
+     	margin:"40px auto",
+     	border:"1px red solid"
+     };
+     var sss=JSON.stringify(ss);
+     console.log(sss);
+     var sss1=sss.replace(/["{}]/g,"").replace(/[,]/g,";");
+     console.log(sss1)
+     document.getElementsByTagName('div')[1].style=sss1;
+
+     //模板深入
+     var scope={
+     	name:"小俊 -------  的世界",
+     	msg:"我是一条来自模板的消息！--"
+     }
+
+     
+   /*  var reg=new RegExp("{{name}}","g")
+     var content=temp.innerHTML.replace(reg,"你好");
+     console.log(content);
+     temp.innerHTML=content;*/
+     //更高级的处理
+     //js遍历对象
+    
+     
+
+     //封装函数
+     function tempFun(id){
+        var reg="";
+        var temp=document.getElementById(id);
+        if(!temp)   return; //找不到dom的处理
+        console.log(scope.name);
+        for(let attr in scope){
+          reg=new RegExp("{{"+attr+"}}","g");
+          var content=temp.innerHTML.replace(reg,scope[attr]);
+          temp.innerHTML=content;
+       }
+     }
+
+     tempFun("scope");
+
+     //循环的处理
+               //自定义属性需要通过getAttribue来获取
+     var scope1=document.getElementById("scope1");
+               //现在的需求是找到有for的标签
+     var fors=scope1.innerHTML.match(/<\w+(.*?)\/\w+>/g);
+     console.log(fors);
+</script>
