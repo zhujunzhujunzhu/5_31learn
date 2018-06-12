@@ -1,0 +1,13 @@
+{
+	"tabnav.html": {
+		"resources": [
+			"index.html",
+			"msg.html"
+		],
+		"refer": [
+			"index.html",
+			"me.html",
+			"msg.html"
+		]
+	}
+}

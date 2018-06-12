@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="./css/mui.min.css" rel="stylesheet" />
+		<script src="./js/mui.min.js"></script>
+	</head>
+      
+	<body>
+		<nav class="mui-bar mui-bar-tab " id="nav" >
+			<a class="mui-tab-item mui-active" id="a1"  hr="index.html">
+				<span class="mui-icon mui-icon-home"></span>
+				<span class="mui-tab-label">首页</span>
+			</a>
+			<a class="mui-tab-item " id="a2" hr="msg.html">
+				<span class="mui-icon mui-icon-email"><span class="mui-badge">9</span></span>
+				<span class="mui-tab-label">消息</span>
+			</a>
+			<a class="mui-tab-item " id="a3" hr="me.html">
+				<span class="mui-icon mui-icon-contact"></span>
+				<span class="mui-tab-label">我滴</span>
+			</a>
+		</nav>
+	</body>
+
+</html>
+<script type="text/javascript">
+	/*
+	   现在的这一块的思路是  :
+	  1  获取当前页面对象 
+	  2 创建页面对象  plus.webview.create(ulr,id,style)
+	  3 将所有的页面添加到主webview     self.append()  这个方法是向一个webview中添加一个子的webview
+	  
+	  现在需要解决的是显示一个 隐藏其余的操作
+	 sub.hide()  sub是webview对象  
+	 plus.webview.show  plus.webview.hide 这个传的是id
+	 
+	 现在碰到的是  self.append(sub)还有一个sub.show()这两者的一个区别  
+	我的一个理解是 append这个是添加  创建好了的添加的  show 这个是显示隐藏的
+	
+	再来看一下一些方法的使用的：
+	plus.webview.create()  这里面的参数有 url 也就是页面的地址 我可以是网上的地址的  。。
+	可以将别人的网页嵌入进去的      
+	
+	优化：
+	绑入id  
+	
+	 * */
+	mui.init()
+	
+	var views=[
+	      {url:'https://music.163.com/m/',id:'index.html'},
+	      {url:'msg.html',id:"msg.html"},{url:'me.html',id:"me.html"}]
+    views_style=[{top:'20px',bottom: '51px'},{top:'20px',bottom: '51px'},{top:'20px',bottom: '51px'}]
+     mui.plusReady(function(){
+        var self = plus.webview.currentWebview(); //获取当前页面对象
+        for(var i = 0 ; i<views.length ; i++){
+               var sub = plus.webview.create(views[i].url,views[i].id,views_style[i]); //创建页面
+                if(i>0){
+                    sub.hide()  //隐藏页面
+                }                   
+                self.append(sub) //显示页面apend()方法在html5plus文档中没有提到，这里的这个方法是将webview对象填充到窗口的方法。           
+     }   
+     
+     var activeTab=views[0]; //激活选项卡 
+     mui(".mui-bar-tab").on('tap','a',function(){
+       var tab = this.getAttribute('hr'); //  获取点击页面ID
+       console.log(tab);
+      if(activeTab==tab){  
+           return;
+     }                
+     plus.webview.show(tab); //    显示点击webview   
+     plus.webview.hide(activeTab);   //隐藏当前 webview  
+     activeTab=tab;
+ })
+
+ })
+     
+     
+     
+
+</script>
